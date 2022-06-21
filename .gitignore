@@ -1,0 +1,15 @@
+/.gradle/
+/.idea/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+/build/
+
+# System Files
+.DS_Store
+Thumbs.db
+/.metadata/

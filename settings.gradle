@@ -1,0 +1,4 @@
+rootProject.name = 'matching-service-poc'
+include 'router-service'
+include 'core'
+

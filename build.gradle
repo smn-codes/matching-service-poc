@@ -1,0 +1,14 @@
+group 'com.hicounselor'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+subprojects {
+    apply plugin: 'application'
+
+    repositories {
+        mavenCentral()
+    }
+}
