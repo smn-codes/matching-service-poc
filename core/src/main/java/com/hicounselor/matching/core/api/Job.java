@@ -1,4 +1,4 @@
-package com.hicounselor.matching.core;
+package com.hicounselor.matching.core.api;
 
 import lombok.Builder;
 import lombok.Getter;
