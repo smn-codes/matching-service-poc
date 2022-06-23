@@ -1,6 +1,8 @@
 package com.hicounselor.matching.repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -27,6 +29,11 @@ public class InMemoryCandidateRepository implements CandidateRepository {
                 .filter(candidate -> !candidate.isAllocated())
                 .findFirst();
         return optionalCandidate.orElse(null);
+    }
+
+    @Override
+    public List<Candidate> fetchAll() {
+        return new ArrayList<>(candidateMap.values());
     }
 
 

@@ -1,5 +1,7 @@
 package com.hicounselor.matching.repository;
 
+import java.util.List;
+
 import com.hicounselor.matching.model.Candidate;
 
 public interface CandidateRepository {
@@ -9,5 +11,7 @@ public interface CandidateRepository {
     Candidate get(String id);
 
     Candidate getUnAssignedCandidate(String domain);
+
+    List<Candidate> fetchAll();
 
 }

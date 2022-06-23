@@ -1,5 +1,6 @@
 package com.hicounselor.router;
 
+import com.hicounselor.matching.core.Constants;
 import com.hicounselor.matching.core.api.Job;
 import com.hicounselor.router.producer.JobProducer;
 import com.hicounselor.router.producer.MatchingJobProducer;
@@ -11,11 +12,11 @@ public class RouterServiceApplication {
 
         JobProducer<Job> jobProducer = new MatchingJobProducer();
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 38; i < 43; i++) {
             Job job = Job.builder()
                     .id(i + "")
                     .company("Google")
-                    .careerTrack("Software")
+                    .careerTrack(Constants.DATA)
                     .jobTitle("SDE1")
                     .jobDescription("SDE1")
                     .build();

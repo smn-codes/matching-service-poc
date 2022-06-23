@@ -1,5 +1,7 @@
 package com.hicounselor.matching.service;
 
+import java.util.List;
+
 import com.hicounselor.matching.model.Candidate;
 import com.hicounselor.matching.repository.CandidateRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,10 @@ public class CandidateService {
 
     public void save(final Candidate candidate) {
         candidateRepository.put(candidate.getId(), candidate);
+    }
+
+    public List<Candidate> fetchAll() {
+        return candidateRepository.fetchAll();
     }
 
     public Candidate getNextAvailableCandidateByDomain(final String domain) {

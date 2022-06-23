@@ -1,6 +1,10 @@
 package com.hicounselor.matching;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import com.hicounselor.matching.cache.InMemoryCandidateJobCache;
 import com.hicounselor.matching.cache.JobCache;
@@ -42,6 +46,12 @@ public class MatchingServiceApplication {
 
         CandidateConsumerResetService resetService = new CandidateConsumerResetService(consumerManager);
         new Thread(resetService).start();
+
+        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
+            List<Candidate> candidates = candidateService.fetchAll();
+            candidates.forEach(candidate -> System.out.println(candidate.getId() + " ::: " + candidate.getJobs()));
+        }, 1, 10, TimeUnit.SECONDS);
 
     }
 
