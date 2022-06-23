@@ -1,0 +1,3 @@
+ext.mainClass = "com.hicounselor.matching.MatchingServiceApplication"
+
+apply from: "$rootDir/gradle/sub-projects.gradle"

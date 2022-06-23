@@ -1,13 +1,15 @@
-group 'com.hicounselor'
-version '1.0-SNAPSHOT'
-
 repositories {
     mavenCentral()
 }
 
+allprojects {
+    group 'com.hicounselor'
+    version '1.0-SNAPSHOT'
+}
+
 subprojects {
 
-    apply plugin: 'application'
+    apply plugin: 'java'
 
     repositories {
         mavenCentral()
@@ -17,5 +19,5 @@ subprojects {
         compileOnly "org.projectlombok:lombok:1.18.24"
         annotationProcessor "org.projectlombok:lombok:1.18.24"
     }
-
 }
+

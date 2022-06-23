@@ -6,6 +6,6 @@ RUN mkdir -p /hicounselor
 
 WORKDIR /hicounselor
 
-COPY libs/router-service-*.jar /hicounselor/app.jar
+COPY libs/matching-service-*.jar /hicounselor/app.jar
 
 ENTRYPOINT ["java", "-jar", "/hicounselor/app.jar"]

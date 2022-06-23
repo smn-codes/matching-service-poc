@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import com.hicounselor.matching.core.api.Job;
+import com.hicounselor.matching.core.provider.TopicProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -20,7 +21,9 @@ public class MatchingJobProducer implements JobProducer<Job> {
     @Override
     public void produce(final Job job) {
         KafkaProducer<String, Job> kafkaProducer = getKafkaProducer();
-        ProducerRecord<String, Job> producerRecord = new ProducerRecord<>("jobs", job.getCompany(), job);
+        String careerTrack = job.getCareerTrack();
+        String topic = TopicProvider.getTopic(careerTrack);
+        ProducerRecord<String, Job> producerRecord = new ProducerRecord<>(topic, job.getCompany(), job);
         Future<RecordMetadata> metadataFuture = kafkaProducer.send(producerRecord);
         try {
             RecordMetadata recordMetadata = metadataFuture.get();
@@ -59,4 +62,5 @@ public class MatchingJobProducer implements JobProducer<Job> {
             kafkaProducer.close();
         }
     }
+
 }

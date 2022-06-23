@@ -1,12 +1,16 @@
 package com.hicounselor.matching.core.utils;
 
+import java.io.IOException;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.hicounselor.matching.core.api.Job;
 import com.hicounselor.matching.core.exception.SerializationException;
+import com.hicounselor.matching.core.serde.DeserializationException;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -55,4 +59,12 @@ public class JsonUtils {
         }
     }
 
+    public static <T> T readValue(final byte[] data, final Class<T> jobClass) {
+        try {
+            return OBJECT_MAPPER.readValue(data, jobClass);
+        }
+        catch (IOException e) {
+            throw new DeserializationException(e);
+        }
+    }
 }

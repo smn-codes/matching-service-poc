@@ -1,29 +1,3 @@
-group 'com.hicounselor'
-version '1.0-SNAPSHOT'
+ext.mainClass = "com.hicounselor.router.RouterServiceApplication"
 
-
-dependencies {
-    implementation project(":core")
-
-}
-
-test {
-    useJUnitPlatform()
-    dependencies {
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-    }
-}
-
-application {
-    mainClass = "com.hicounselor.router.RouterServiceApplication"
-}
-
-
-task copyDockerfile(type: Copy, dependsOn: jar) {
-    group "docker"
-    from "${projectDir}/docker"
-    into "${buildDir}/docker"
-}
-
-build.dependsOn(copyDockerfile)
+apply from: "$rootDir/gradle/sub-projects.gradle"
