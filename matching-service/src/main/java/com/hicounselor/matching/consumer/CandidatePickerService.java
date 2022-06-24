@@ -2,12 +2,15 @@ package com.hicounselor.matching.consumer;
 
 import java.util.Objects;
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import com.hicounselor.matching.core.utils.PropertyUtils;
 import com.hicounselor.matching.model.Candidate;
 import com.hicounselor.matching.service.CandidateService;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 
 import static com.hicounselor.matching.core.Constants.BOOTSTRAP_SERVERS_KEY;
 import static com.hicounselor.matching.core.Constants.CONTROL_EVENT_STOP_SIGNAL;
@@ -37,11 +40,26 @@ public class CandidatePickerService {
         Candidate nextCandidate = candidateService.getNextAvailableCandidateByDomain(domain);
         if (Objects.nonNull(nextCandidate)) {
             System.out.println("Picking next candidate with id " + nextCandidate.getId());
-            kafkaProducer.send(new ProducerRecord<>(CONTROL_EVENT_TOPIC, domain, nextCandidate.getId()));
+            Future<RecordMetadata> metadataFuture = kafkaProducer.send(new ProducerRecord<>(CONTROL_EVENT_TOPIC, domain, nextCandidate.getId()));
+            try {
+                metadataFuture.get();
+            }
+            catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
         }
         else {
             System.out.println("All the candidates are completed for the domain " + domain);
-            kafkaProducer.send(new ProducerRecord<>(CONTROL_EVENT_TOPIC, domain, CONTROL_EVENT_STOP_SIGNAL));
+            if (candidateService.allCandidatesAllocated()) {
+                System.out.println("Matching for all the candidates is completed");
+                Future<RecordMetadata> metadataFuture = kafkaProducer.send(new ProducerRecord<>(CONTROL_EVENT_TOPIC, domain, CONTROL_EVENT_STOP_SIGNAL));
+                try {
+                    metadataFuture.get();
+                }
+                catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

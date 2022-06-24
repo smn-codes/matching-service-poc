@@ -47,13 +47,16 @@ public class CandidateConsumerResetService implements Runnable {
             ConsumerRecords<String, String> consumerRecords = kafkaConsumer.poll(Duration.ofSeconds(5));
             for (ConsumerRecord<String, String> consumerRecord : consumerRecords) {
                 String candidateId = consumerRecord.value();
-                if (!"NO_CANDIDATE".equals(candidateId)) {
-                    matchingJobConsumerManager.runConsumer(consumerRecord.key(), candidateId);
+                if ("NO_CANDIDATE".equals(candidateId)) {
                     signalStop = true;
                     break;
                 }
+                else {
+                    matchingJobConsumerManager.runConsumer(consumerRecord.key(), candidateId);
+                }
             }
         }
+        System.out.println("Consumer reset is stopped.");
     }
 
 }

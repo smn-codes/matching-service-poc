@@ -27,4 +27,9 @@ public class CandidateService {
         return candidateRepository.getUnAssignedCandidate(domain);
     }
 
+    public boolean allCandidatesAllocated() {
+        List<Candidate> candidates = fetchAll();
+        return candidates.parallelStream().allMatch(Candidate::isAllocated);
+    }
+
 }
