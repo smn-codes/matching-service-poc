@@ -7,10 +7,11 @@ task fatJar(type: Jar) {
     manifest {
         attributes 'Main-Class': "${mainClass}"
     }
-    archivesBaseName = "${project.name}" + "-all"
+    archiveBaseName = "${project.name}" + "-all"
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
+    dependsOn(':core:jar')
 }
 
 task copyDockerfile(type: Copy) {
@@ -19,5 +20,5 @@ task copyDockerfile(type: Copy) {
     into "${buildDir}"
 }
 
-build.dependsOn(fatJar)
-build.dependsOn(copyDockerfile)
+fatJar.dependsOn(copyDockerfile)
+jar.dependsOn(copyDockerfile)
